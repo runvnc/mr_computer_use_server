@@ -198,4 +198,42 @@ export class X11Service {
       }
     }
   }
+
+  /**
+   * Returns the current screen dimensions.
+   */
+  async getScreenSize(): Promise<{ width: number; height: number }> {
+    this.logger.log('Getting screen size');
+    
+    try {
+      // Using xdotool getdisplaygeometry to get screen dimensions
+      const output = await this.execCommand('xdotool getdisplaygeometry');
+      
+      // Parse output which looks like: "1920 1080"
+      const dimensions = output.split(' ');
+      if (dimensions.length >= 2) {
+        const width = parseInt(dimensions[0], 10);
+        const height = parseInt(dimensions[1], 10);
+        return { width, height };
+      }
+      
+      throw new Error(`Could not parse screen dimensions from: ${output}`);
+    } catch (error) {
+      // Fallback to xrandr if xdotool fails
+      try {
+        const output = await this.execCommand('xrandr | grep "\\*" | awk \'{print $1}\'');
+        const dimensions = output.split('x');
+        if (dimensions.length >= 2) {
+          const width = parseInt(dimensions[0], 10);
+          const height = parseInt(dimensions[1], 10);
+          return { width, height };
+        }
+        
+        throw new Error(`Could not parse screen dimensions from xrandr: ${output}`);
+      } catch (fallbackError) {
+        this.logger.error(`Failed to get screen size: ${fallbackError.message}`);
+        throw fallbackError;
+      }
+    }
+  }
 }

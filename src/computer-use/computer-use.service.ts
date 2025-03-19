@@ -151,6 +151,14 @@ export class ComputerUseService {
     return this.x11Service.mouseWheel(axis, amount);
   }
 
+  /**
+   * "screen_size": Returns the dimensions of the screen.
+   */
+  async screen_size(): Promise<{ width: number; height: number }> {
+    this.logger.log(`Getting screen size`);
+    return this.x11Service.getScreenSize();
+  }
+
   // Helper: a simple delay.
   private delay(ms: number): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, ms));

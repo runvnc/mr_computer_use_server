@@ -42,6 +42,7 @@ COPY supervisord-webtop.conf /etc/supervisor/conf.d/supervisord.conf
 # Expose ports
 # - 3100: NestJS API (changed from 3000 to avoid conflicts)
 # - 3001: Webtop UI (already exposed by base image)
+EXPOSE 3000
 EXPOSE 3100
 
 # The linuxserver/webtop container uses s6-overlay for initialization

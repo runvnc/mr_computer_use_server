@@ -194,4 +194,20 @@ export class ComputerUseController {
       );
     }
   }
+
+  @Get('screen-size')
+  async screenSize() {
+    try {
+      return await this.computerUseService.screen_size();
+    } catch (error) {
+      this.logger.error(
+        `Error getting screen size: ${error.message}`,
+        error.stack,
+      );
+      throw new HttpException(
+        'Failed to get screen size',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
 }
