@@ -129,14 +129,14 @@ export class X11Service {
   async mouseWheel(axis: 'v' | 'h', value: number): Promise<string> {
     if (axis === 'v') {
       // Vertical scrolling: 4 = up, 5 = down
-      const button = value > 0 ? 4 : 5;
+      const button = value > 0 ? 5 : 4;
       const count = Math.min(Math.max(Math.round(Math.abs(value) / 50), 1), 10);
       this.logger.log(`Scrolling vertically with button ${button}, count ${count}`);
       return this.execCommand(`xdotool click --repeat ${count} ${button}`);
     } else {
       try {
         // Try buttons 6 & 7 for horizontal scrolling (if supported)
-        const button = value > 0 ? 6 : 7;
+        const button = value > 0 ? 7 : 6;
         const count = Math.min(Math.max(Math.round(Math.abs(value) / 50), 1), 10);
         this.logger.log(`Scrolling horizontally with button ${button}, count ${count}`);
         return this.execCommand(`xdotool click --repeat ${count} ${button}`);
